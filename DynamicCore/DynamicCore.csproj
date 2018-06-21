@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Umi.Dynamic.Core</AssemblyName>
+    <PackageId>Umi.Dynamic.Core</PackageId>
+    <Version>1.0.0-alpha</Version>
+    <Authors>Hayama Umi</Authors>
+    <AssemblyTitle>Dynamic Library Core</AssemblyTitle>
+    <Description>Provider dynamic for library family</Description>
+    <Copyright>Hayama Umi 2018</Copyright>
+    <RootNamespace>Umi.Dynamic.Core</RootNamespace>
+    <Product>Dynamic Core</Product>
+    <LangVersion>7.3</LangVersion>
+    <PackageLicenseUrl>https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/shby0527/DynamicProxy/wiki</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/shby0527/DynamicProxy</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dynamic proxy</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Umi.Dynamic.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Umi.Dynamic.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>
