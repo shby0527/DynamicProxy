@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Umi.Dynamic.Core.Metadata
@@ -9,6 +10,12 @@ namespace Umi.Dynamic.Core.Metadata
     /// </summary>
     public interface IProxyFactory
     {
+
+        /// <summary>
+        /// 获取代理类型生成工厂
+        /// </summary>
+        IProxyTypeFactory TypeFactory { get; }
+
         /// <summary>
         /// 生成属性代理
         /// </summary>
@@ -29,5 +36,16 @@ namespace Umi.Dynamic.Core.Metadata
         /// <param name="name">方法名</param>
         /// <returns></returns>
         IProxyMethodFactory ProxyMethod(string name);
+
+        /// <summary>
+        /// 生成代理构造方法
+        /// </summary>
+        /// <returns></returns>
+        IProxyConstructorFactory ProxyConstructor();
+
+        /// <summary>
+        /// 生成结束
+        /// </summary>
+        TypeInfo Finish();
     }
 }
