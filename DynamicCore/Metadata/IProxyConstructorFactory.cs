@@ -8,7 +8,7 @@ namespace Umi.Dynamic.Core.Metadata
     /// <summary>
     /// 构造器代理工厂
     /// </summary>
-    public interface IProxyConstructorFactory
+    public interface IProxyConstructorFactory : IProxyBase
     {
         /// <summary>
         /// 设置代理目标构造器

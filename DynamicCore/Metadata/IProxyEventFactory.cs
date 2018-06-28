@@ -8,7 +8,7 @@ namespace Umi.Dynamic.Core.Metadata
     /// <summary>
     /// 生成事件代理
     /// </summary>
-    public interface IProxyEventFactory
+    public interface IProxyEventFactory : IProxyBase
     {
         /// <summary>
         /// 设置Add方法代理

@@ -29,7 +29,7 @@ namespace Umi.Dynamic.Core.Internel
 
         public IProxyFactory CreateInterfaceProxy(string name)
         {
-            ModuleBuilder moduleBuilder = _builder.DefineDynamicModule($"{ConstValue.NAMESPACE_FOR_DYNAMIC}");
+            ModuleBuilder moduleBuilder = _builder.DefineDynamicModule($"{ConstValue.MODULE_NAME_FOR_DYNAMIC}");
             return new InterfaceProxyFactory(moduleBuilder, name);
         }
     }

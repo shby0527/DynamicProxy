@@ -8,7 +8,7 @@ namespace Umi.Dynamic.Core.Metadata
     /// <summary>
     /// 设置属性代理
     /// </summary>
-    public interface IProxyPropertyFactory
+    public interface IProxyPropertyFactory : IProxyBase
     {
         /// <summary>
         /// 生成属性Read代理

@@ -6,14 +6,13 @@ using System.Text;
 namespace Umi.Dynamic.Core.Metadata
 {
     /// <summary>
-    /// 生成代理方法工厂
+    /// 代理基础接口
     /// </summary>
-    public interface IProxyMethodFactory : IProxyBase
+    public interface IProxyBase
     {
         /// <summary>
-        /// 设置代理方法
+        /// 获取或设置代理目标
         /// </summary>
-        /// <param name="method">目标方法</param>
-        void SetProxyMethod(MethodInfo method);
+        FieldInfo TargetField { get; }
     }
 }

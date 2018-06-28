@@ -22,6 +22,14 @@ namespace Umi.Dynamic.Core.Internel
 
         public IProxyTypeFactory TypeFactory => new ProxyTypeFactory(_typeBuilder);
 
+        public FieldInfo BuildField(string name, Type fieldType, FieldAttributes attributes)
+        {
+            if (isFinish)
+                throw new InvalidOperationException("Already finished");
+            FieldBuilder fieldBuilder = _typeBuilder.DefineField(name, fieldType, attributes);
+            return fieldBuilder;
+        }
+
         public TypeInfo Finish()
         {
             if (isFinish)
@@ -30,28 +38,28 @@ namespace Umi.Dynamic.Core.Internel
             return _typeBuilder.CreateTypeInfo();
         }
 
-        public IProxyConstructorFactory ProxyConstructor()
+        public IProxyConstructorFactory ProxyConstructor(FieldInfo target)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");
-            throw new NotSupportedException("interface proxy not support constructor proxy");
+            return new ConstructorProxyFactory(_typeBuilder, target);
         }
 
-        public IProxyEventFactory ProxyEvent(string name)
-        {
-            if (isFinish)
-                throw new InvalidOperationException("Already finished");
-            throw new NotImplementedException();
-        }
-
-        public IProxyMethodFactory ProxyMethod(string name)
+        public IProxyEventFactory ProxyEvent(string name, FieldInfo target)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");
             throw new NotImplementedException();
         }
 
-        public IProxyPropertyFactory ProxyProperty(string name)
+        public IProxyMethodFactory ProxyMethod(string name, FieldInfo target)
+        {
+            if (isFinish)
+                throw new InvalidOperationException("Already finished");
+            throw new NotImplementedException();
+        }
+
+        public IProxyPropertyFactory ProxyProperty(string name, FieldInfo target)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");

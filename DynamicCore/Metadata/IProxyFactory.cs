@@ -20,28 +20,41 @@ namespace Umi.Dynamic.Core.Metadata
         /// 生成属性代理
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="target">目标对象的字段</param>
         /// <returns></returns>
-        IProxyPropertyFactory ProxyProperty(string name);
+        IProxyPropertyFactory ProxyProperty(string name, FieldInfo target);
 
         /// <summary>
         /// 生成事件
         /// </summary>
         /// <param name="name">代理事件</param>
+        /// <param name="target">目标对象的字段</param>
         /// <returns></returns>
-        IProxyEventFactory ProxyEvent(string name);
+        IProxyEventFactory ProxyEvent(string name, FieldInfo target);
 
         /// <summary>
         /// 生成方法
         /// </summary>
         /// <param name="name">方法名</param>
+        /// <param name="target">目标对象的字段</param>
         /// <returns></returns>
-        IProxyMethodFactory ProxyMethod(string name);
+        IProxyMethodFactory ProxyMethod(string name, FieldInfo target);
 
         /// <summary>
         /// 生成代理构造方法
         /// </summary>
+        /// <param name="target">目标对象的字段</param>
         /// <returns></returns>
-        IProxyConstructorFactory ProxyConstructor();
+        IProxyConstructorFactory ProxyConstructor(FieldInfo target);
+
+        /// <summary>
+        /// 创建字段
+        /// </summary>
+        /// <param name="name">字段名</param>
+        /// <param name="fieldType">字段类型</param>
+        /// <param name="attributes">字段属性</param>
+        /// <returns>返回字段信息</returns>
+        FieldInfo BuildField(string name, Type fieldType, FieldAttributes attributes);
 
         /// <summary>
         /// 生成结束
