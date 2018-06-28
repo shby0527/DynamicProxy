@@ -45,21 +45,21 @@ namespace Umi.Dynamic.Core.Internel
             return new ConstructorProxyFactory(_typeBuilder, target);
         }
 
-        public IProxyEventFactory ProxyEvent(string name, FieldInfo target)
+        public IProxyEventFactory ProxyEvent(FieldInfo target, EventInfo overrider)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");
             throw new NotImplementedException();
         }
 
-        public IProxyMethodFactory ProxyMethod(string name, FieldInfo target)
+        public IProxyMethodFactory ProxyMethod(FieldInfo target, MethodInfo overrider)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");
-            throw new NotImplementedException();
+            return new MethodProxyFactory(target, _typeBuilder, overrider);
         }
 
-        public IProxyPropertyFactory ProxyProperty(string name, FieldInfo target)
+        public IProxyPropertyFactory ProxyProperty(FieldInfo target, PropertyInfo overrider)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");

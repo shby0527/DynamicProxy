@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>7.3</LangVersion>
-    <StartupObject>Umi.ConsoleTest.Program</StartupObject>
+    <StartupObject>Umi.ConsoleTest.T</StartupObject>
   </PropertyGroup>
 
 </Project>

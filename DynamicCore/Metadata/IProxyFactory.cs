@@ -19,26 +19,26 @@ namespace Umi.Dynamic.Core.Metadata
         /// <summary>
         /// 生成属性代理
         /// </summary>
-        /// <param name="name"></param>
         /// <param name="target">目标对象的字段</param>
+        /// <param name="overrider">被重写的属性</param>
         /// <returns></returns>
-        IProxyPropertyFactory ProxyProperty(string name, FieldInfo target);
+        IProxyPropertyFactory ProxyProperty(FieldInfo target, PropertyInfo overrider);
 
         /// <summary>
         /// 生成事件
         /// </summary>
-        /// <param name="name">代理事件</param>
         /// <param name="target">目标对象的字段</param>
+        /// <param name="overrider">被重写的事件</param>
         /// <returns></returns>
-        IProxyEventFactory ProxyEvent(string name, FieldInfo target);
+        IProxyEventFactory ProxyEvent(FieldInfo target, EventInfo overrider);
 
         /// <summary>
         /// 生成方法
         /// </summary>
-        /// <param name="name">方法名</param>
         /// <param name="target">目标对象的字段</param>
+        /// <param name="overrider">被重写的方法</param>
         /// <returns></returns>
-        IProxyMethodFactory ProxyMethod(string name, FieldInfo target);
+        IProxyMethodFactory ProxyMethod(FieldInfo target, MethodInfo overrider);
 
         /// <summary>
         /// 生成代理构造方法
