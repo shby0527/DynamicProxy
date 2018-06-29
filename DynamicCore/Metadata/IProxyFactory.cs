@@ -21,31 +21,35 @@ namespace Umi.Dynamic.Core.Metadata
         /// </summary>
         /// <param name="target">目标对象的字段</param>
         /// <param name="overrider">被重写的属性</param>
+        /// <param name="targetType">代理目标的类型</param>
         /// <returns></returns>
-        IProxyPropertyFactory ProxyProperty(FieldInfo target, PropertyInfo overrider);
+        IProxyPropertyFactory ProxyProperty(FieldInfo target, PropertyInfo overrider, FieldInfo targetType);
 
         /// <summary>
         /// 生成事件
         /// </summary>
         /// <param name="target">目标对象的字段</param>
         /// <param name="overrider">被重写的事件</param>
+        /// <param name="targetType">代理目标的类型</param>
         /// <returns></returns>
-        IProxyEventFactory ProxyEvent(FieldInfo target, EventInfo overrider);
+        IProxyEventFactory ProxyEvent(FieldInfo target, EventInfo overrider, FieldInfo targetType);
 
         /// <summary>
         /// 生成方法
         /// </summary>
         /// <param name="target">目标对象的字段</param>
         /// <param name="overrider">被重写的方法</param>
+        /// <param name="targetType">代理目标的类型</param>
         /// <returns></returns>
-        IProxyMethodFactory ProxyMethod(FieldInfo target, MethodInfo overrider);
+        IProxyMethodFactory ProxyMethod(FieldInfo target, MethodInfo overrider, FieldInfo targetType);
 
         /// <summary>
         /// 生成代理构造方法
         /// </summary>
         /// <param name="target">目标对象的字段</param>
+        /// <param name="targetType">代理目标的类型</param>
         /// <returns></returns>
-        IProxyConstructorFactory ProxyConstructor(FieldInfo target);
+        IProxyConstructorFactory ProxyConstructor(FieldInfo target, FieldInfo targetType);
 
         /// <summary>
         /// 创建字段

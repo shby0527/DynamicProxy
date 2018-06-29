@@ -38,28 +38,28 @@ namespace Umi.Dynamic.Core.Internel
             return _typeBuilder.CreateTypeInfo();
         }
 
-        public IProxyConstructorFactory ProxyConstructor(FieldInfo target)
+        public IProxyConstructorFactory ProxyConstructor(FieldInfo target, FieldInfo targetType)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");
-            return new ConstructorProxyFactory(_typeBuilder, target);
+            return new InterfaceConstructorProxyFactory(_typeBuilder, target, targetType);
         }
 
-        public IProxyEventFactory ProxyEvent(FieldInfo target, EventInfo overrider)
+        public IProxyEventFactory ProxyEvent(FieldInfo target, EventInfo overrider, FieldInfo targetType)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");
             throw new NotImplementedException();
         }
 
-        public IProxyMethodFactory ProxyMethod(FieldInfo target, MethodInfo overrider)
+        public IProxyMethodFactory ProxyMethod(FieldInfo target, MethodInfo overrider, FieldInfo targetType)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");
-            return new MethodProxyFactory(target, _typeBuilder, overrider);
+            return new MethodProxyFactory(target, _typeBuilder, overrider, targetType);
         }
 
-        public IProxyPropertyFactory ProxyProperty(FieldInfo target, PropertyInfo overrider)
+        public IProxyPropertyFactory ProxyProperty(FieldInfo target, PropertyInfo overrider, FieldInfo targetType)
         {
             if (isFinish)
                 throw new InvalidOperationException("Already finished");

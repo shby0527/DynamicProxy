@@ -14,6 +14,7 @@ namespace Umi.Dynamic.Core.Metadata
         /// 设置代理方法
         /// </summary>
         /// <param name="method">目标方法</param>
-        void SetProxyMethod(MethodInfo method);
+        /// <param name="declaredType">声明的类型</param>
+        void SetProxyMethod(MethodInfo method, Type declaredType);
     }
 }

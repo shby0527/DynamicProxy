@@ -7,12 +7,33 @@ namespace Umi.Dynamic.Core.Aspect
     /// <summary>
     /// AOP特性
     /// </summary>
-    public abstract class AspectAttributeBase : Attribute, IAspect
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Module | AttributeTargets.Assembly | AttributeTargets.Struct, AllowMultiple = true, Inherited = true)]
+    public abstract class AspectAttributeBase : Attribute, IAspect, IComparable, IComparable<IAspect>
     {
         /// <summary>
         /// 优先级
         /// </summary>
-        public virtual int Priority { get; } = 0;
+        public virtual int Priority { get; } = int.MaxValue;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int CompareTo(object obj)
+        {
+            return obj == null ? 1 : (-Priority + ((IAspect)obj).Priority);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(IAspect other)
+        {
+            return other == null ? 1 : (-Priority + other.Priority);
+        }
 
         /// <summary>
         /// 拦截器处理

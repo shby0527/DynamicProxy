@@ -12,14 +12,17 @@ namespace Umi.Dynamic.Core.Internel.Metadata
     internal abstract class AbstractProxyBase : IProxyBase
     {
 
-        protected AbstractProxyBase(FieldInfo fieldInfo)
+        protected AbstractProxyBase(FieldInfo target, FieldInfo targetType)
         {
-            TargetField = fieldInfo;
+            TargetField = target;
+            TargetType = targetType;
         }
 
         /// <summary>
         /// 获取或设置代理目标
         /// </summary>
         public FieldInfo TargetField { get; }
+
+        public FieldInfo TargetType { get; }
     }
 }

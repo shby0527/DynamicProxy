@@ -9,14 +9,14 @@ using Umi.Dynamic.Core.Metadata;
 
 namespace Umi.Dynamic.Core.Internel.Metadata
 {
-    internal class ConstructorProxyFactory : AbstractProxyBase, IProxyConstructorFactory
+    internal class InterfaceConstructorProxyFactory : AbstractProxyBase, IProxyConstructorFactory
     {
         private ConstructorBuilder _builder;
 
         private readonly TypeBuilder _typeBuilder;
 
-        public ConstructorProxyFactory(TypeBuilder builder, FieldInfo target)
-            : base(target)
+        public InterfaceConstructorProxyFactory(TypeBuilder builder, FieldInfo target, FieldInfo targetType)
+            : base(target, targetType)
         {
             _typeBuilder = builder;
             _builder = null;
@@ -33,16 +33,18 @@ namespace Umi.Dynamic.Core.Internel.Metadata
                 paramInfos = constructor.GetParameters();
             else
                 paramInfos = new ParameterInfo[0];
-            Type[] parameterTypes = new Type[paramInfos.Length + 1];
+            Type[] parameterTypes = new Type[paramInfos.Length + 2];
             parameterTypes[0] = fieldType;
-            Array.Copy(paramInfos.Select(p => p.ParameterType).ToArray(), 0, parameterTypes, 1, paramInfos.Length);
+            parameterTypes[1] = typeof(Type);
+            Array.Copy(paramInfos.Select(p => p.ParameterType).ToArray(), 0, parameterTypes, 2, paramInfos.Length);
             _builder = _typeBuilder.DefineConstructor(MethodAttributes.HideBySig | MethodAttributes.Public,
                                                      CallingConventions.Standard, parameterTypes);
-            ParameterBuilder parameterBuilder = _builder.DefineParameter(1, ParameterAttributes.In, "target");
-            int i = 2;
+            _builder.DefineParameter(1, ParameterAttributes.In, "target");
+            _builder.DefineParameter(2, ParameterAttributes.In, "type");
+            int i = 3;
             foreach (var item in paramInfos)
             {
-                _builder.DefineParameter(i++, ParameterAttributes.In, item.Name);
+                _builder.DefineParameter(i++, item.Attributes, item.Name);
             }
             ImplConstructor(constructor);
         }
@@ -69,7 +71,7 @@ namespace Umi.Dynamic.Core.Internel.Metadata
                 ParameterInfo[] parameters = constructor.GetParameters();
                 for (int i = 0; i < parameters.Length; i++)
                 {
-                    generator.Emit(OpCodes.Ldarg, i + 2);// load other parameters,the first parameter is target object skip it
+                    generator.Emit(OpCodes.Ldarg, i + 3);// load other parameters,the first parameter is target object skip it
                 }
                 generator.Emit(OpCodes.Call, constructor); // and call the parent constructor
                 // call the base constructor
@@ -84,6 +86,9 @@ namespace Umi.Dynamic.Core.Internel.Metadata
             generator.Emit(OpCodes.Ldarg_0);//load this pointer
             generator.Emit(OpCodes.Ldarg_1);//load the first parameter
             generator.Emit(OpCodes.Stfld, TargetField); // save the argument to the local field
+            generator.Emit(OpCodes.Ldarg_0);//load this pointer
+            generator.Emit(OpCodes.Ldarg_2);//load the first parameter
+            generator.Emit(OpCodes.Stfld, TargetType); // save the argument to the local field
             generator.Emit(OpCodes.Ret);
             // finish the constructor and return
         }
