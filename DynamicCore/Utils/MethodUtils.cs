@@ -50,7 +50,6 @@ namespace Umi.Dynamic.Core.Utils
             aspects.AddRange(customAttributes.Where(p => p is IAspect).Select(p => p as IAspect));
             customAttributes = target.GetType().GetCustomAttributes(true);
             aspects.AddRange(customAttributes.Where(p => p is IAspect).Select(p => p as IAspect));
-            aspects.Sort();
             Type type = target.GetType();
             Type[] parameters = arguments.Select(p => p.GetType()).ToArray();
             var methodInfo = type.GetMethod(methodName, parameters);
@@ -58,6 +57,9 @@ namespace Umi.Dynamic.Core.Utils
                 methodInfo = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic, null, parameters, null);
             if (methodInfo == null)
                 throw new InvalidOperationException("method not found");
+            customAttributes = methodInfo.GetCustomAttributes(true);
+            aspects.AddRange(customAttributes.Where(p => p is IAspect).Select(p => p as IAspect));
+            aspects.Sort();
             var aspectMetadata = CreateAspectMetadata(methodInfo, target, parameters, arguments);
             return CallInterceptorChina(aspects, aspectMetadata);
         }
@@ -71,10 +73,10 @@ namespace Umi.Dynamic.Core.Utils
                 IAspect current = enumerator.Current;
                 Type aspectType = current.GetType();
                 Type[] types = new Type[] { typeof(AspectMetadata) };
-                MethodInfo method = aspectType.GetMethod("Interceptor", types);
+                MethodInfo method = aspectType.GetMethod("CallInterecptor", types);
                 metadata = CreateAspectMetadata(method, current, types, new object[] { metadata });
             }
-            return  first.Interceptor(metadata);
+            return first.CallInterecptor(metadata);
         }
     }
 }

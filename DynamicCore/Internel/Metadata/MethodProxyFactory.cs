@@ -57,6 +57,7 @@ namespace Umi.Dynamic.Core.Internel.Metadata
             Type methodUtils = typeof(MethodUtils);
             MethodInfo callTarget = methodUtils.GetMethod("CallTarget", new Type[] { typeof(Type), typeof(string),
                 typeof(object), typeof(object[]) });
+            Label lbl = generator.DefineLabel();
             #region C# 代码
             /************************************************
              * object[] params = new object[]{arg1,arg2,arg3,arg4……};
@@ -83,10 +84,16 @@ namespace Umi.Dynamic.Core.Internel.Metadata
             generator.Emit(OpCodes.Ldfld, TargetField);
             generator.Emit(OpCodes.Ldloc_0);
             generator.Emit(OpCodes.Call, callTarget);
-            if (method.ReturnType.IsGenericParameter || method.ReturnType.IsValueType)
-                generator.Emit(OpCodes.Unbox_Any, method.ReturnType);
             if (method.ReturnType == typeof(void))
                 generator.Emit(OpCodes.Pop);
+            else if (method.ReturnType.IsGenericParameter || method.ReturnType.IsValueType)
+            {
+                generator.Emit(OpCodes.Dup);
+                generator.Emit(OpCodes.Brtrue, lbl);
+                generator.Emit(OpCodes.Ret);
+                generator.MarkLabel(lbl);
+                generator.Emit(OpCodes.Unbox_Any, method.ReturnType);
+            }
             generator.Emit(OpCodes.Ret);
         }
     }

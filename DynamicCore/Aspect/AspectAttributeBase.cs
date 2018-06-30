@@ -7,7 +7,7 @@ namespace Umi.Dynamic.Core.Aspect
     /// <summary>
     /// AOP特性
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Module | AttributeTargets.Assembly | AttributeTargets.Struct, AllowMultiple = true, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Module | AttributeTargets.Assembly | AttributeTargets.Struct | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public abstract class AspectAttributeBase : Attribute, IAspect, IComparable, IComparable<IAspect>
     {
         /// <summary>
@@ -39,6 +39,15 @@ namespace Umi.Dynamic.Core.Aspect
         /// 拦截器处理
         /// </summary>
         /// <param name="metadata">目标元数据</param>
-        public abstract object Interceptor(AspectMetadata metadata);
+        public abstract void Interceptor(AspectMetadata metadata);
+
+        /// <summary>
+        /// 拦截器调用
+        /// </summary>
+        public object CallInterecptor(AspectMetadata metadata)
+        {
+            Interceptor(metadata);
+            return metadata.Return;
+        }
     }
 }

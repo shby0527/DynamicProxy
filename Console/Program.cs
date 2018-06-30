@@ -7,16 +7,14 @@ using Umi.Dynamic.Core.Aspect;
 
 namespace Umi.ConsoleTest
 {
-    [DefaultAspect]
     public interface IKk
-
     {
         int TestBB(int a, int b);
     }
 
     public class MyTestAttribute : AspectAttributeBase
     {
-        public override object Interceptor(AspectMetadata metadata)
+        public override void Interceptor(AspectMetadata metadata)
         {
             foreach (var item in metadata.Parameters)
             {
@@ -28,12 +26,9 @@ namespace Umi.ConsoleTest
             Console.WriteLine("放回值");
             Console.WriteLine(metadata.Return);
             Console.WriteLine("调用后");
-            return metadata.Return;
         }
     }
 
-    [MyTest]
-    [DefaultAspect]
     public class Program : IKk
     {
 
@@ -43,6 +38,7 @@ namespace Umi.ConsoleTest
             Console.WriteLine(b);
         }
 
+        [MyTest]
         public int TestBB(int a, int b)
         {
             object x = a;
@@ -65,7 +61,7 @@ namespace Umi.ConsoleTest
             var c = new CustomAttributeBuilder(aspect.GetConstructors()[0], new object[0]);
             t.TypeFactory.TypeBuilder.SetCustomAttribute(c);
             t.TypeFactory.AddInterface(ikkType);
-            var field = t.BuildField("target", typeof(Program), FieldAttributes.Private);
+            var field = t.BuildField("target", typeof(IKk), FieldAttributes.Private);
             var type = t.BuildField("type", typeof(Type), FieldAttributes.Private);
             var proxyConstructor = t.ProxyConstructor(field, type);
             proxyConstructor.SetConstructor(null);
@@ -74,7 +70,7 @@ namespace Umi.ConsoleTest
             Type finish = t.Finish();
             var k = new Program(8, 9);
             IKk dist = (IKk)Activator.CreateInstance(finish, k, typeof(IKk));
-            var r = dist.TestBB(1, 20);
+            dist.TestBB(1, 20);
         }
     }
 }
