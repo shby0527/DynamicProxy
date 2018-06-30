@@ -39,6 +39,6 @@ namespace Umi.Dynamic.Core.Aspect
         /// 拦截器处理
         /// </summary>
         /// <param name="metadata">目标元数据</param>
-        public abstract void Interceptor(AspectMetadata metadata);
+        public abstract object Interceptor(AspectMetadata metadata);
     }
 }

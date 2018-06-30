@@ -13,9 +13,10 @@ namespace Umi.Dynamic.Core.Aspect
         /// 
         /// </summary>
         /// <param name="metadata"></param>
-        public override void Interceptor(AspectMetadata metadata)
+        public override object Interceptor(AspectMetadata metadata)
         {
             metadata.Processed();
+            return metadata.Return;
         }
     }
 }

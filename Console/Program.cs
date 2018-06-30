@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Reflection.Emit;
-
+using System.Collections.Generic;
 using Umi.Dynamic.Core;
 using Umi.Dynamic.Core.Aspect;
 
@@ -13,6 +13,27 @@ namespace Umi.ConsoleTest
     {
         int TestBB(int a, int b);
     }
+
+    public class MyTestAttribute : AspectAttributeBase
+    {
+        public override object Interceptor(AspectMetadata metadata)
+        {
+            foreach (var item in metadata.Parameters)
+            {
+                Console.WriteLine(item);
+                Console.WriteLine("方法调用前");
+
+            }
+            metadata.Processed();
+            Console.WriteLine("放回值");
+            Console.WriteLine(metadata.Return);
+            Console.WriteLine("调用后");
+            return metadata.Return;
+        }
+    }
+
+    [MyTest]
+    [DefaultAspect]
     public class Program : IKk
     {
 
@@ -24,7 +45,11 @@ namespace Umi.ConsoleTest
 
         public int TestBB(int a, int b)
         {
-            throw new NotImplementedException();
+            object x = a;
+
+            int c = (int)x;
+
+            return a + b;
         }
     }
 
@@ -33,25 +58,12 @@ namespace Umi.ConsoleTest
         static void Main(string[] args)
         {
             IDynamicFactory factory = DynamicAssemblyBuilder.CreateDynamic("Test");
-            var t = factory.CreateInterfaceProxy("!@#$%^&*(");
+            var t = factory.CreateInterfaceProxy("test");
             Type ikkType = typeof(IKk);
             var gg = ikkType.GetGenericArguments();
             Type aspect = typeof(DefaultAspectAttribute);
             var c = new CustomAttributeBuilder(aspect.GetConstructors()[0], new object[0]);
             t.TypeFactory.TypeBuilder.SetCustomAttribute(c);
-            //var gt = t.TypeFactory.DefindGenericParameter("T", "M", "N");
-            //for (int i = 0; i < gg.Length; i++)
-            //{
-            //    var gpattr = gg[i].GenericParameterAttributes;
-            //    if ((gpattr & GenericParameterAttributes.Contravariant) == GenericParameterAttributes.Contravariant)
-            //        gpattr = gpattr ^ GenericParameterAttributes.Contravariant;
-            //    if ((gpattr & GenericParameterAttributes.Covariant) == GenericParameterAttributes.Covariant)
-            //        gpattr = gpattr ^ GenericParameterAttributes.Covariant;
-            //    gt[i + 1].SetBaseTypeConstraint(gg[i].BaseType);
-            //    gt[i + 1].SetInterfaceConstraints(gg[i].GetInterfaces());
-            //    gt[i + 1].SetGenericParameterAttributes(gpattr);
-            //}
-            //var ikG = ikkType.MakeGenericType(gt[1], gt[2]);
             t.TypeFactory.AddInterface(ikkType);
             var field = t.BuildField("target", typeof(Program), FieldAttributes.Private);
             var type = t.BuildField("type", typeof(Type), FieldAttributes.Private);
@@ -61,9 +73,8 @@ namespace Umi.ConsoleTest
             pm.SetProxyMethod(ikkType.GetMethods()[0], ikkType);
             Type finish = t.Finish();
             var k = new Program(8, 9);
-
-            IKk dist = (IKk)Activator.CreateInstance(finish, k, typeof(Program));
-            dist.TestBB(1, 20);
+            IKk dist = (IKk)Activator.CreateInstance(finish, k, typeof(IKk));
+            var r = dist.TestBB(1, 20);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Umi.Dynamic.Core.Utils
         /// <param name="methodName">调用的方法名</param>
         /// <param name="target"></param>
         /// <param name="arguments"></param>
-        public static void CallTarget(Type targetType, string methodName, object target, object[] arguments)
+        public static object CallTarget(Type targetType, string methodName, object target, object[] arguments)
         {
             List<IAspect> aspects = new List<IAspect>();
             if (GlobleInterceptors != null)
@@ -48,6 +48,8 @@ namespace Umi.Dynamic.Core.Utils
             aspects.AddRange(customAttributes.Where(p => p is IAspect).Select(p => p as IAspect));
             customAttributes = targetType.GetCustomAttributes(true);
             aspects.AddRange(customAttributes.Where(p => p is IAspect).Select(p => p as IAspect));
+            customAttributes = target.GetType().GetCustomAttributes(true);
+            aspects.AddRange(customAttributes.Where(p => p is IAspect).Select(p => p as IAspect));
             aspects.Sort();
             Type type = target.GetType();
             Type[] parameters = arguments.Select(p => p.GetType()).ToArray();
@@ -57,9 +59,9 @@ namespace Umi.Dynamic.Core.Utils
             if (methodInfo == null)
                 throw new InvalidOperationException("method not found");
             var aspectMetadata = CreateAspectMetadata(methodInfo, target, parameters, arguments);
-            CallInterceptorChina(aspects, aspectMetadata);
+            return CallInterceptorChina(aspects, aspectMetadata);
         }
-        private static void CallInterceptorChina(IEnumerable<IAspect> aspects, AspectMetadata lastest)
+        private static object CallInterceptorChina(IEnumerable<IAspect> aspects, AspectMetadata lastest)
         {
             var enumerator = aspects.GetEnumerator();
             AspectMetadata metadata = lastest;
@@ -72,7 +74,7 @@ namespace Umi.Dynamic.Core.Utils
                 MethodInfo method = aspectType.GetMethod("Interceptor", types);
                 metadata = CreateAspectMetadata(method, current, types, new object[] { metadata });
             }
-            first.Interceptor(metadata);
+            return  first.Interceptor(metadata);
         }
     }
 }
